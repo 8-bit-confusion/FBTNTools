@@ -20,7 +20,7 @@ def download_image(url, filename):
 
 def gen_image_urls(csv_filename):
     with open(csv_filename, 'r') as csv:
-        return [line[:-1] for line in csv.readlines()[1:]]
+        return [line[:-1] for line in csv.readlines()]
 
 def encode_from_url(url):
    response = requests.get(url)
