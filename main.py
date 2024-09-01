@@ -27,7 +27,7 @@ def encode_from_url(url):
    return base64.b64encode(response.content).decode('utf-8')
 
 responses = []
-for url in gen_image_urls()[0]:
+for url in gen_image_urls("coquette_data_set.csv")[0]:
     base64_image = encode_from_url(url)
 
     response = client.chat.completions.create(
