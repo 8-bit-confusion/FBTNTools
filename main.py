@@ -22,7 +22,6 @@ def gen_image_urls(csv_filename):
     with open(csv_filename, 'r') as csv:
         return [line [:-1] for line in csv.readlines()[1:]]
 
-print(gen_image_urls("coquette_data_set.csv"))
 
 responses = []
 filename = ""
