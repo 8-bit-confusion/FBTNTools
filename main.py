@@ -20,9 +20,9 @@ def download_image(url, filename):
 
 def gen_image_urls(csv_filename):
     with open(csv_filename, 'r') as csv:
-        return csv.readlines()[1:]
+        return [line [:-1] for line in csv.readlines()[1:]]
 
-print(gen_image_urls(""))
+print(gen_image_urls("coquette_data_set.csv"))
 
 responses = []
 filename = ""
