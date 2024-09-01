@@ -20,15 +20,22 @@ def download_image(url, filename):
 
 def gen_image_urls(csv_filename):
     with open(csv_filename, 'r') as csv:
-        return [line[:-1] for line in csv.readlines()]
+        return [str(line[:-1]).replace("\x00", "") for line in csv.readlines()]
 
 def encode_from_url(url):
    response = requests.get(url)
    return base64.b64encode(response.content).decode('utf-8')
 
+REM_CHARS = "\x00\xfe\xff"
+def clean_url(url):
+    for c in REM_CHARS:
+        url = url.replace(c, "")
+    return url
+
 responses = []
-for url in gen_image_urls("coquette_data_set.csv"):
-    base64_image = encode_from_url(url)
+for url in gen_image_urls("iunsct.csv"):
+    if url == "": continue
+    base64_image = encode_from_url(clean_url(url))
 
     response = client.chat.completions.create(
         model = "gpt-4o",
