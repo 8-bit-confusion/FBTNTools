@@ -20,8 +20,7 @@ def download_image(url, filename):
 
 def gen_image_urls(csv_filename):
     with open(csv_filename, 'r') as csv:
-        lines = csv.readlines()
-        return lines[1:]
+        return csv.readlines()[1:]
 
 print(gen_image_urls(""))
 
