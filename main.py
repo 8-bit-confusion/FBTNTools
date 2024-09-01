@@ -27,13 +27,8 @@ def encode_from_url(url):
    return base64.b64encode(response.content).decode('utf-8')
 
 responses = []
-<<<<<<< HEAD
-for url in gen_image_urls("coquette_data_set.csv")[0]:
-    base64_image = encode_from_url("https://www.pinterest.com/pin/886012926683936637/")
-=======
 for url in gen_image_urls("coquette_data_set.csv"):
     base64_image = encode_from_url(url)
->>>>>>> 1530820ab02aba583b40bd87d9ef4bfcc9d55301
 
     response = client.chat.completions.create(
         model = "gpt-4o",
