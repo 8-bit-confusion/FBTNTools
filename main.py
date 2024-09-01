@@ -22,43 +22,44 @@ def gen_image_urls(csv_filename):
     with open(csv_filename, 'r') as csv:
         return [line [:-1] for line in csv.readlines()[1:]]
 
+def encode_from_url(url):
+   response = requests.get(url)
+   return base64.b64encode(response.content).decode('utf-8')
 
 responses = []
-filename = ""
+for url in gen_image_urls()[0]:
+    base64_image = encode_from_url(url)
 
-image_path = filename
-base64_image = encode_image(image_path)
-
-response = client.chat.completions.create(
-    model = "gpt-4o",
-    messages = [
-        {
-            "role": "system",
-            "content": "Caption this photo. Do not describe the model's hair or make-up, \
-                just the garments and accessories. Stick to the facts, don't editorialize. \
-                Answer in a clause, like sleeveless, high-neck, sheer dress adorned with \
-                intricate beading and a voluminous train embellished with large, \
-                pastel-colored floral appliqués. Be descriptive of the material and fabric."
-        },
-        {
-            'role': "user",
-            "content": [
-                {
-                    "type": "text",
-                    "text": "What's in this image?"
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/jpeg;base64, {base64_image}"
+    response = client.chat.completions.create(
+        model = "gpt-4o",
+        messages = [
+            {
+                "role": "system",
+                "content": "Caption this photo. Do not describe the model's hair or make-up, \
+                    just the garments and accessories. Stick to the facts, don't editorialize. \
+                    Answer in a clause, like sleeveless, high-neck, sheer dress adorned with \
+                    intricate beading and a voluminous train embellished with large, \
+                    pastel-colored floral appliqués. Be descriptive of the material and fabric."
+            },
+            {
+                'role': "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "What's in this image?"
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64, {base64_image}"
+                        }
                     }
-                }
-            ]
-        }
-    ],
-    temperature = 0.7,
-    max_tokens = 150
-)
+                ]
+            }
+        ],
+        temperature = 0.7,
+        max_tokens = 150
+    )
 
-print(response.choices[0].message.content)
-responses.append(response.choices[0].message.content)
+    print(response.choices[0].message.content)
+    responses.append(response.choices[0].message.content)
