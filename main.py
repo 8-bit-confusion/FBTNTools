@@ -36,14 +36,18 @@ response = client.chat.completions.create(
     messages = [
         {
             "role": "system",
-            "content": "Caption this photo. Do not describe the model's hair or make-up, just the garments and accessories. Stick to the facts, don't editorialize. Answer in a clause, like sleeveless, high-neck, sheer dress adorned with intricate beading and a voluminous train embellished with large, pastel-colored floral appliqués. Be descriptive of the material and fabric."
+            "content": "Caption this photo. Do not describe the model's hair or make-up, \
+                just the garments and accessories. Stick to the facts, don't editorialize. \
+                Answer in a clause, like sleeveless, high-neck, sheer dress adorned with \
+                intricate beading and a voluminous train embellished with large, \
+                pastel-colored floral appliqués. Be descriptive of the material and fabric."
         },
         {
             'role': "user",
             "content": [
                 {
                     "type": "text",
-                    "text": "What’s in this image?"
+                    "text": "What's in this image?"
                 },
                 {
                     "type": "image_url",
