@@ -7,9 +7,9 @@ import os
 
 # package imports
 try: import requests
-except(ImportError): warnings.warn("'requests' module not installed. Try running 'install_drivers()'.")
+except(ImportError): warnings.warn("'requests' module not installed. Try running 'install_packages()'.")
 try: import gallery_dl
-except(ImportError): warnings.warn("'gallery_dl' module not installed. Try running 'install_drivers()'.")
+except(ImportError): warnings.warn("'gallery_dl' module not installed. Try running 'install_packages()'.")
 
 def install_packages():
     subprocess.call("pip install requests")
