@@ -1,6 +1,15 @@
 import os
-from dotenv import load_dotenv
-from openai import OpenAI
+import subprocess
+import warnings
+
+try: from dotenv import load_dotenv
+except(ImportError): warnings.warn("'dotenv' module not installed. Try running 'install_packages()'.")
+try: from openai import OpenAI
+except(ImportError): warnings.warn("'openai' module not installed. Try running 'install_packages()'.")
+
+def install_packages():
+    subprocess.call("pip install dotenv")
+    subprocess.call("pip install openai")
 
 class Prompts:
     @classmethod
