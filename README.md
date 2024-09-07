@@ -36,7 +36,7 @@ python -m ensurepip --upgrade
 For more information, see https://pip.pypa.io/en/stable/installation/.
 
 ### Code
-Call the function `install_packages()` in any python file to automatically download required packagaes (this requires PIP). This function only needs to be called once for a given python installation.
+Call the function `install_packages()` in any python file to automatically download required packagaes (this requires PIP). This function only needs to be called once for a given Python installation.
 
 ### Command line
 requests:
@@ -77,7 +77,7 @@ The `Gallery` class also contains a static `download_image()` method, which take
 
 `Gallery` classes can also be saved to and loaded from `.csv` files (see 'Saving and loading `Gallery` objects' below).
 
-### Encoding access example:
+### Encoding access example
 ```py
 example_gallery # Gallery object
 example_gallery["<image url>"] # -> base-64 image data associated with key URL
@@ -85,7 +85,7 @@ example_gallery.keys() # -> set-like view of all image URLs
 example_gallery.values() # -> set-like view of all base-64 encodings
 ```
 
-### Encoding access example (iterative):
+### Encoding access example (iterative)
 ```py
 example_gallery # Gallery object
 for key in example_gallery.keys(): # iterate through all image URLs
@@ -99,7 +99,7 @@ Calling the `.to_csv()` function from an instance of the `Gallery` class will sa
 
 Calling the static `Gallery.from_csv()` constructor will generate a new `Gallery` object from the data in the `.csv` file provided in the `filename` arguement. The value of `filename` should be the relative path to the `.csv` file from your script.
 
-### Relative file path example:
+### Relative file path example
 File structure:
 ```
 project root [folder]
@@ -115,7 +115,97 @@ example_gallery = Gallery.from_csv("data/data1.csv")
 example_gallery.to_csv("data/data1.csv")
 ```
 
-
 Calling `example_gallery = Gallery.from_csv("data/data1.csv")` correctly loads the desired `.csv` file from the data folder.
 
 Calling `example_gallery.to_csv("data/data1.csv")` correctly saves the `Gallery` object to the desired location within the data folder.
+
+# `ChatUtils`
+## Installing `ChatUtils`
+### Manual
+- Download the `chat_utils.py` file from this github 
+- Add it to your project directory
+
+### Command line
+Windows Powershell:
+```
+Invoke-WebRequest `
+-Uri https://raw.githubusercontent.com/8-bit-confusion/FBTN-data/main/chat_utils.py `
+-OutFile gallery_scrape.py
+```
+macOS Terminal:
+```
+curl https://raw.githubusercontent.com/8-bit-confusion/FBTN-data/main/chat_utils.py \
+-o gallery_scrape.py
+```
+Unix/Linux Bash with `curl`:
+```
+curl https://raw.githubusercontent.com/8-bit-confusion/FBTN-data/main/chat_utils.py \
+-o gallery_scrape.py
+```
+Unix/Linux Bash with `wget`:
+```
+wget https://raw.githubusercontent.com/8-bit-confusion/FBTN-data/main/chat_utils.py \
+-O gallery_scrape.py
+```
+
+## Installing `ChatUtils`'s required packages
+### Installing PIP
+PIP should come pre-installed with your Python installation, but to make sure you have it installed, you can run the following command:
+```
+python -m ensurepip --upgrade
+```
+For more information, see https://pip.pypa.io/en/stable/installation/.
+
+### Code
+Call the function `install_packages()` in any python file to automatically download required packagaes (this requires PIP). This function only needs to be called once for a given Python installation.
+
+### Command line
+dotenv:
+```
+pip install dotenv
+```
+
+openai:
+```
+pip install openai
+```
+
+## Using `dotenv` and `openai` API keys
+The `ChatClient` component of `ChatUtils` expects your ChatGPT API key to be stored in the environment variable `OPENAI_API_KEY`. The `dotenv` package is used to load the environment variables. To create an environment variable, first create a file named `.env` in your project directory. _This file must be within the same directory as your main script._ To properly format your `.env` file, see the example below.
+
+### Example setup
+File structure:
+```
+project root [folder]
+|-- .env [environment file]
+|-- main.py [script]
+```
+
+`.env` contents:
+```
+OPENAI_API_KEY = [API key goes here]
+```
+
+Note that the API key is _not_ wrapped in quotation marks.
+
+### Github considerations
+If you are using Github as a version control manager and your repository is public, your `.env` file _SHOULD NOT BE TRACKED._ To ensure that it is never tracked, `ignore` the file by creating a file _within your project root directory_ named `.gitignore` and add the following line:
+
+```
+.env
+```
+
+Not tracking your `.env` file prevents your API keys from being exposed.
+
+## Using `ChatUtils` in your code
+`ChatUtils` has two main components: the `Prompts` class, which is used for easily generating properly formatted JSON prompts for ChatGPT, and the `ChatClient` class, which wraps part of the ChatGPT API for easily submitting prompts and saving responses.
+
+### Using `Prompts`
+The `Prompts` class has two static functions for generating formatted JSON prompts for use with the ChatGPT API: `.text_prompt()` and `.image_prompt()`. The `.text_prompt()` function takes a single argument, `prompt`, which expects a string containing the text of your prompt. The `.image_prompt()` function also has a `prompt` argument, but takes the additional argument `image`, which expects a string containing the base-64 encoded representation of the image you would like to submit. Base-64 encodings are used in image prompts to ensure that ChatGPT is using the correct image—when providing image URLs, Chat tends to hallucinate image contents. The JSON formatted prompts created by this class can be used with both a `ChatClient` object, or natively with the ChatGPT API.
+
+For more information on aquiring the base-64 encodings for images, see the [`GalleryScrape`](#galleryscrape) tool.
+
+### Using `ChatClient`
+The `ChatClient` class wraps part of the ChatGPT API and the `OpenAI` client class. Direct access to the `OpenAI` object is provided through the `ChatClient._client` property, but if you plan on using the `OpenAI` class directly, consider either using the static `.load_client()` function, which will use the API key stored in your `.env` file and return an `OpenAI` object constructed with that key.
+
+`ChatClient` objects have one major function, `.response()`, which wraps the ChatGPT API function `OpenAI.chat.completions.create()`. `.response()` takes any number of JSON formatted prompts as positional parameters, as well as named parameters `system_prompt` and `temperature`. `system_message` expects a string containing the system prompt text, and automatically includes a system prompt in your API call. It's default value is `None`. `temperature` wraps the `temperature` parameter of the `OpenAI.chat.completions.create()` function, and defaults to `0.7`.
