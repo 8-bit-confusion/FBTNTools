@@ -14,9 +14,7 @@ try: import gallery_dl
 except(ImportError): warnings.warn("'gallery_dl' module not installed. Try running 'install_packages()'.")
 
 def install_packages():
-    print("Installing requests... ", end="", flush=True)
     subprocess.call("pip install requests", shell=True, env=env)
-    print("Installing gallery_dl... ", end="", flush=True)
     subprocess.call("pip install gallery_dl", shell=True, env=env)
 
 class Gallery:
