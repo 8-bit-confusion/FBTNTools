@@ -10,8 +10,8 @@ try: from openai import OpenAI
 except(ImportError): warnings.warn("'openai' module not installed. Try running 'install_packages()'.")
 
 def install_packages():
-    subprocess.call("pip install dotenv", env=env)
-    subprocess.call("pip install openai", env=env)
+    subprocess.call("pip install dotenv", shell=True, env=env)
+    subprocess.call("pip install openai", shell=True, env=env)
 
 class Prompts:
     @classmethod
