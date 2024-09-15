@@ -1,5 +1,4 @@
 # builtin imports
-import subprocess
 import pip
 import warnings
 import base64
@@ -13,13 +12,8 @@ try: import gallery_dl
 except(ImportError): warnings.warn("'gallery_dl' module not installed. Try running 'install_packages()'.")
 
 def install_packages():
-    IN_COLAB = 'google.colab' in sys.modules
-    if IN_COLAB:
-        pip.main(["install", "requests"])
-        pip.main(["install", "gallery_dl"])
-    else:
-        subprocess.call("pip install requests")
-        subprocess.call("pip install gallery_dl")
+    pip.main(["install", "requests"])
+    pip.main(["install", "gallery_dl"])
 
 class Gallery:
     def __init__(self):
