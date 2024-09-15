@@ -1,9 +1,11 @@
 # builtin imports
-import pip
+import subprocess
 import warnings
 import base64
 import sys
 import os
+
+env = os.environ.copy()
 
 # package imports
 try: import requests
@@ -12,8 +14,8 @@ try: import gallery_dl
 except(ImportError): warnings.warn("'gallery_dl' module not installed. Try running 'install_packages()'.")
 
 def install_packages():
-    pip.main(["install", "requests"])
-    pip.main(["install", "gallery_dl"])
+    subprocess.call("pip install requests", env=env)
+    subprocess.call("pip install gallery_dl", env=env)
 
 class Gallery:
     def __init__(self):
@@ -33,7 +35,7 @@ class Gallery:
 
     @classmethod
     def from_url(cls, source_url: str):
-        subprocess.call(f"gallery-dl {source_url} -G > tmp.gdlout", shell=True)
+        subprocess.call(f"gallery-dl {source_url} -G > tmp.gdlout", shell=True, env=env)
 
         gallery = {}
         with open("tmp.gdlout", 'r') as tmpfile:
@@ -46,7 +48,7 @@ class Gallery:
         return cls._of(gallery)
     
     def add_from_url(self, source_url: str):
-        subprocess.call(f"gallery-dl {source_url} -G > tmp.gdlout", shell=True)
+        subprocess.call(f"gallery-dl {source_url} -G > tmp.gdlout", shell=True, env=env)
 
         with open("tmp.gdlout", 'r') as tmpfile:
             contents = tmpfile.readlines()
