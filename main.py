@@ -3,6 +3,7 @@ from chat_utils import Prompts, ChatClient
 
 if __name__ == "__main__":
     client = ChatClient()
+    # https://in.pinterest.com/iunsct/coquette-outfits/
     iunsct_gallery = Gallery.from_csv("data/iunsct.csv")
 
     for base64_image in iunsct_gallery.values():

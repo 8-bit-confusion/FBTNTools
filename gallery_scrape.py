@@ -1,5 +1,6 @@
 # builtin imports
 import subprocess
+import pip
 import warnings
 import base64
 import sys
@@ -12,8 +13,13 @@ try: import gallery_dl
 except(ImportError): warnings.warn("'gallery_dl' module not installed. Try running 'install_packages()'.")
 
 def install_packages():
-    subprocess.call("pip install requests")
-    subprocess.call("pip install gallery_dl")
+    IN_COLAB = 'google.colab' in sys.modules
+    if IN_COLAB:
+        pip.main(["install", "requests"])
+        pip.main(["install", "gallery_dl"])
+    else:
+        subprocess.call("pip install requests")
+        subprocess.call("pip install gallery_dl")
 
 class Gallery:
     def __init__(self):
@@ -67,6 +73,7 @@ class Gallery:
         with open(filepath, 'r') as csv:
             contents = csv.read().split('\n')
             for pair in contents:
+                if pair == "": continue
                 url, img = pair.split(',')
                 gallery[url] = img
         return cls._of(gallery)
@@ -75,8 +82,8 @@ class Gallery:
         if not filename.endswith(".csv"): filename += ".csv"
         with open(filename, 'w') as outfile:
             file_contents = ""
-            for key in list(self.gallery.keys()):
-                csv_line = key + "," + self.gallery[key]
+            for key in list(self._gallery.keys()):
+                csv_line = key + "," + self._gallery[key]
                 file_contents += csv_line + "\n"
             outfile.write(file_contents)
 
