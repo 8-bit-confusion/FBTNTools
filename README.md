@@ -27,6 +27,13 @@ wget https://raw.githubusercontent.com/8-bit-confusion/FBTN-data/main/gallery_sc
 -O gallery_scrape.py
 ```
 
+### Jupyter notebook / Google Colab
+Paste the following line of code into a cell in your notebook and run it.
+```
+!curl https://raw.githubusercontent.com/8-bit-confusion/FBTN-data/main/gallery_scrape.py \
+-o gallery_scrape.py
+```
+
 ## Installing `GalleryScrape`'s required packages
 ### Installing PIP
 PIP should come pre-installed with your Python installation, but to make sure you have it installed, you can run the following command:
@@ -47,6 +54,13 @@ pip install requests
 gallery-dl:
 ```
 pip install gallery_dl
+```
+
+### Jupyter notebook / Google Colab
+Paste the following code into a cell in your notebook and run it.
+```
+import gallery_scrape
+gallery_scrape.install_packages()
 ```
 
 ## Using `GalleryScrape` in the command line
