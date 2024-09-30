@@ -58,6 +58,9 @@ class Gallery:
         
         os.remove("tmp.gdlout")
 
+    def add_from_image_link(self, image_url: str):
+        self._gallery[image_url] = Gallery.download_img(image_url)
+
     @classmethod
     def download_img(cls, image_url: str) -> str:
         response = requests.get(image_url)
